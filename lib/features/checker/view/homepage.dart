@@ -109,7 +109,7 @@ class TicketDetails extends StatelessWidget {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {}, // TODO: submit selected tickets.
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 minimumSize: const Size.fromHeight(50),
