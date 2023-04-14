@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:ticket_checker/constants/colors.dart';
-import 'package:ticket_checker/dummy_data.dart';
 import 'package:ticket_checker/features/checker/model/booking_details_model.dart';
+import 'package:ticket_checker/features/checker/repo/checker_repo.dart';
 import 'package:ticket_checker/features/checker/widget/bookedname.dart';
 import 'package:ticket_checker/features/checker/widget/bookingdetails.dart';
 import 'package:ticket_checker/features/checker/widget/bordercard.dart';
+import 'package:ticket_checker/utils/app_build_methods.dart';
+import 'package:ticket_checker/utils/extensions.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({super.key, required this.data});
@@ -26,10 +28,10 @@ class DetailPage extends StatelessWidget {
 }
 
 class TicketDetails extends StatelessWidget {
-  const TicketDetails({super.key, required this.ticketModel});
+  TicketDetails({super.key, required this.ticketModel});
 
   final BookingDetails ticketModel;
-
+  List<String?> selected = [];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -84,14 +86,22 @@ class TicketDetails extends StatelessWidget {
                               TextStyle(fontSize: 20, color: Colors.black)),
                       enabled: !(seat.taken ?? false)))
                   .toList(),
-              onChange: (allSelectedItems, selectedItem) {}),
+              onChange: (allSelectedItems, selectedItem) {
+                selected = allSelectedItems;
+              }),
         ),
         const Expanded(
           child: SizedBox(),
         ),
         Center(
           child: ElevatedButton(
-            onPressed: () {}, // TODO: submit selected tickets.
+            onPressed: () {
+              if (selected.isNotEmpty) {
+                checkDetails(context,
+                    seatNo: selected.join(',').log(),
+                    ticketNo: ticketModel.result?.orderNo ?? '');
+              }
+            }, // TODO: submit selected tickets.
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               minimumSize: const Size.fromHeight(50),
@@ -101,5 +111,16 @@ class TicketDetails extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void checkDetails(BuildContext context,
+      {required String seatNo, required String ticketNo}) {
+    SubmitTicketRepo(seatNo: seatNo, ticketNo: ticketNo).fetchFromAPIService(
+        onShowError: (msg, [asToast]) {
+      showAppToast(msg: msg);
+    }, onSuccess: (message) {
+      showAppToast(msg: message ?? '');
+      Navigator.pop(context);
+    });
   }
 }

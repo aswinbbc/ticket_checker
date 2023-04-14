@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_checker/components/input_field.dart';
-import 'package:ticket_checker/components/qrscan.dart';
 import 'package:ticket_checker/constants/colors.dart';
 
 class QrScannerBox extends StatelessWidget {
   const QrScannerBox({
     super.key,
-    required this.orderNumberController,
+    required this.orderNumberController, required this.onIconClick,
   });
-
+  final VoidCallback onIconClick;
   final TextEditingController orderNumberController;
 
   @override
@@ -21,14 +20,10 @@ class QrScannerBox extends StatelessWidget {
           IconButton(
             iconSize: 250,
             icon: const Icon(Icons.qr_code_scanner_rounded),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const QrCode(),
-              ));
-            },
+            onPressed: onIconClick,
           ),
           const Text(
-            "Scan to above",
+            "Scan to click above",
             style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -41,7 +36,7 @@ class QrScannerBox extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: primaryTextColor),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           InputField(

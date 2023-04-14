@@ -1,4 +1,6 @@
+import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -121,6 +123,19 @@ extension FutureExtension<T> on Future<T> {
         progressOverlay = null;
       }
     });
+  }
+}
+
+myLog(dynamic value, [String name = '']) {
+  if (kDebugMode) {
+    log({'@$name': value}.toString());
+  }
+}
+
+extension Logger<E> on E {
+  E log([String key = '']) {
+    myLog(this, key);
+    return this;
   }
 }
 
@@ -428,14 +443,14 @@ extension WidgetExtension on Widget {
             // ),
             SvgPicture.asset(
               'empty_state'.asAssetSvg(),
-              height: 135.sm,
-              width: 135.sm,
+              height: 135.sp,
+              width: 135.sp,
             ),
             Text(
               text,
               style: TextStyle(
                 color: const Color(0xFFA3A3A3),
-                fontSize: 19.sm,
+                fontSize: 19.sp,
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
@@ -476,14 +491,14 @@ extension WidgetExtension on Widget {
         children: [
           SvgPicture.asset(
             'empty_state'.asAssetSvg(),
-            height: 100.sm,
-            width: 100.sm,
+            height: 100.sp,
+            width: 100.sp,
           ),
           Text(
             text,
             style: TextStyle(
               color: const Color(0xFFA3A3A3),
-              fontSize: 15.sm,
+              fontSize: 15.sp,
               fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.center,
