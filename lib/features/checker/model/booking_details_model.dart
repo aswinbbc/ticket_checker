@@ -10,12 +10,11 @@ class BookingDetails {
     statusCode = json['statusCode'];
     message = json['message'];
     success = json['success'];
-    result =
-        json['result'] != null ?  Result.fromJson(json['result']) : null;
+    result = json['result'] != null ? Result.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['message'] = message;
     data['success'] = success;
@@ -67,8 +66,8 @@ class Result {
     mobileNo = json['mobile_no'];
     eventDate = json['event_date'];
     seatType = json['seat_type'];
-    bookedSeatNos = json['booked_seat_nos'];
-    takenSeatNos = json['taken_seat_nos'];
+    bookedSeatNos = json['booked_seat_nos'].toString();
+    takenSeatNos = json['taken_seat_nos'].toString();
     isCompleted = json['is_completed'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];

@@ -9,5 +9,5 @@ class AppConfig {
   ///
   ///Live IP URL
   ///
-  static const String baseURL = "http://192.168.1.152:3003";
+  static const String baseURL = "http://68.178.170.0:3003";
 }
