@@ -4,8 +4,8 @@ import 'package:ticket_checker/utils/app_build_methods.dart';
 
 class CheckerViewModel extends ChangeNotifier {
   //not used
-  getMyTickets(String ticketNo, BuildContext context) {
-    GetTicketRepo(ticketNo).fetchFromAPIService(
+  getMyTickets(String ticketNo,String seatNos, BuildContext context) {
+    GetTicketRepo(ticketNo,seatNos).fetchFromAPIService(
       onShowError: (msg, [asToast]) {
         showAppToast(msg: msg);
       },

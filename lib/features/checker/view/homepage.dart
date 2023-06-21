@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  String seatNos = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,49 +39,32 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: primaryColor,
         title: const Center(child: Text("Search Tickets")),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          QrScannerBox(
-            orderNumberController: orderNumberController,
-            onIconClick: () async {
-              String? cameraScanResult = await scanner.scan();
-              try {
-                print(cameraScanResult);
-                final ticket = jsonDecode(cameraScanResult ?? '');
-                final ticketNo = ticket['order_number'];
-                orderNumberController.text = ticketNo;
-                checkDetails(context);
-              } catch (e) {
-                showAppToast(msg: "Not a valid ticket");
-              }
+      body: QrScannerBox(
+        orderNumberController: orderNumberController,
+        onIconClick: () async {
+          String? cameraScanResult = await scanner.scan();
+          try {
+            seatNos = "";
+            print(cameraScanResult);
+            final ticket = jsonDecode(cameraScanResult ?? '');
+            final ticketNo = ticket['order_number'];
+            seatNos = ticket['seat_number'];
+            orderNumberController.text = ticketNo;
+            checkDetails(context);
+          } catch (e) {
+            showAppToast(msg: "Not a valid ticket");
+          }
 
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => const QrCode(),
-              // ));
-            },
-          ),
-          // Spacer(),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                checkDetails(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                minimumSize: const Size.fromHeight(50),
-              ),
-              child: const Text("Search"),
-            ),
-          ),
-        ],
+          // Navigator.of(context).push(MaterialPageRoute(
+          //   builder: (context) => const QrCode(),
+          // ));
+        },
       ),
     );
   }
 
   void checkDetails(BuildContext context) {
-    GetTicketRepo(orderNumberController.text).fetchFromAPIService(
+    GetTicketRepo(orderNumberController.text, seatNos).fetchFromAPIService(
       onShowError: (msg, [asToast]) {
         showAppToast(msg: msg);
       },

@@ -9,10 +9,10 @@ extension CheckerApi on WebAPIService {
   ///
   ///get ticket with ticket number.
   ///
-  Future<BookingDetails?> getTicket(String ticketNo) async {
+  Future<BookingDetails?> getTicket(String ticketNo, String seatNos) async {
     return dio
         .get(
-          "$urlBaseApi/bookings/order-details?order_no=$ticketNo",
+          "$urlBaseApi/bookings/order-details?order_no=$ticketNo&seat_number=$seatNos",
           // data: jsonEncode(params),
         )
         .then((res) => BookingDetails.fromJson(res.data))

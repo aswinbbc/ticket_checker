@@ -5,10 +5,11 @@ import 'package:ticket_checker/services/web_api_service.dart';
 
 class GetTicketRepo extends BaseSimpleAPIProvider<BookingDetails> {
   String ticketNo;
-  GetTicketRepo(this.ticketNo);
+  String seatNos;
+  GetTicketRepo(this.ticketNo,this.seatNos);
   @override
   Future<BookingDetails?> apiService() {
-    return WebAPIService().getTicket(ticketNo);
+    return WebAPIService().getTicket(ticketNo,seatNos);
   }
 }
 
