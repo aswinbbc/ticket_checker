@@ -25,8 +25,14 @@ extension CheckerApi on WebAPIService {
   ///get ticket with ticket number.
   ///
   Future<String?> submitSelected(
-      {required String seatNo, required String ticketNo}) async {
-    var param = {"order_no": ticketNo, "taken_seat_nos": seatNo};
+      {required String seatNo,
+      required String ticketNo,
+      required String totalSeats}) async {
+    var param = {
+      "order_no": ticketNo,
+      "taken_seat_nos": seatNo,
+      "seat_number": totalSeats
+    };
     return dio
         .put(
           "$urlBaseApi/bookings/confirm",

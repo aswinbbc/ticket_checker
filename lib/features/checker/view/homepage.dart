@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailPage(data: tickets),
+                  builder: (context) =>
+                      DetailPage(data: tickets, seatNos: seatNos),
                 ));
           } else {
             showAppToast(msg: tickets.message!);

@@ -10,8 +10,12 @@ import 'package:ticket_checker/utils/app_build_methods.dart';
 import 'package:ticket_checker/utils/extensions.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key, required this.data});
-
+  const DetailPage({
+    super.key,
+    required this.data,
+    required this.seatNos,
+  });
+  final String seatNos;
   final BookingDetails data;
   @override
   Widget build(BuildContext context) {
@@ -22,18 +26,36 @@ class DetailPage extends StatelessWidget {
       ),
       body: TicketDetails(
         ticketModel: data,
+        seatNos: seatNos,
       ),
     );
   }
 }
 
 class TicketDetails extends StatelessWidget {
-  TicketDetails({super.key, required this.ticketModel});
+  TicketDetails({super.key, required this.ticketModel, required this.seatNos});
 
   final BookingDetails ticketModel;
+  final String seatNos;
   List<String?> selected = [];
   @override
   Widget build(BuildContext context) {
+    var selectedBoxDecoration = BoxDecoration(
+        gradient:
+            const LinearGradient(colors: [Colors.green, Colors.lightGreen]),
+        border: Border.all(color: Colors.green[700]!),
+        borderRadius: BorderRadius.circular(5));
+    var disabledBoxDecoration = BoxDecoration(
+        color: Colors.grey,
+        border: Border.all(color: Colors.grey[500]!),
+        borderRadius: BorderRadius.circular(5));
+    var boxDecoration = BoxDecoration(
+        gradient: LinearGradient(colors: [
+          Colors.green.withOpacity(0.1),
+          Colors.yellow.withOpacity(0.1),
+        ]),
+        border: Border.all(color: Colors.green[200]!),
+        borderRadius: BorderRadius.circular(15));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,22 +74,9 @@ class TicketDetails extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: MultiSelectContainer(
               itemsDecoration: MultiSelectDecorations(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.green.withOpacity(0.1),
-                      Colors.yellow.withOpacity(0.1),
-                    ]),
-                    border: Border.all(color: Colors.green[200]!),
-                    borderRadius: BorderRadius.circular(15)),
-                selectedDecoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: [Colors.green, Colors.lightGreen]),
-                    border: Border.all(color: Colors.green[700]!),
-                    borderRadius: BorderRadius.circular(5)),
-                disabledDecoration: BoxDecoration(
-                    color: Colors.grey,
-                    border: Border.all(color: Colors.grey[500]!),
-                    borderRadius: BorderRadius.circular(5)),
+                decoration: boxDecoration,
+                selectedDecoration: selectedBoxDecoration,
+                disabledDecoration: disabledBoxDecoration,
               ),
               items: ticketModel.result!.seats!
                   .map((seat) => MultiSelectCard(
@@ -97,9 +106,12 @@ class TicketDetails extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               if (selected.isNotEmpty) {
-                checkDetails(context,
-                    seatNo: selected.join(',').log(),
-                    ticketNo: ticketModel.result?.orderNo ?? '');
+                submitDetails(
+                  context,
+                  seatNo: selected.join(',').log(),
+                  ticketNo: ticketModel.result?.orderNo ?? '',
+                  totalSeats: seatNos,
+                );
               }
             }, // TODO: submit selected tickets.
             style: ElevatedButton.styleFrom(
@@ -113,10 +125,12 @@ class TicketDetails extends StatelessWidget {
     );
   }
 
-  void checkDetails(BuildContext context,
-      {required String seatNo, required String ticketNo}) {
-    SubmitTicketRepo(seatNo: seatNo, ticketNo: ticketNo).fetchFromAPIService(
-        onShowError: (msg, [asToast]) {
+  void submitDetails(BuildContext context,
+      {required String seatNo,
+      required String ticketNo,
+      required String totalSeats}) {
+    SubmitTicketRepo(seatNo: seatNo, ticketNo: ticketNo, totalSeats: totalSeats)
+        .fetchFromAPIService(onShowError: (msg, [asToast]) {
       showAppToast(msg: msg);
     }, onSuccess: (message) {
       showAppToast(msg: message ?? '');
