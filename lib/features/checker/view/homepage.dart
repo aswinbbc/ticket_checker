@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ticket_checker/components/qrscan.dart';
 import 'package:ticket_checker/constants/colors.dart';
 import 'package:ticket_checker/features/checker/repo/checker_repo.dart';
@@ -39,20 +40,38 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: primaryColor,
         title: const Center(child: Text("Search Tickets")),
       ),
+      floatingActionButton: Text.rich(
+        TextSpan(
+          text: 'Powered by ',
+          children: <TextSpan>[
+            TextSpan(
+                text: 'Amalgamate',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: QrScannerBox(
         orderNumberController: orderNumberController,
         onIconClick: () async {
           String? cameraScanResult = await scanner.scan();
-          try {
-            seatNos = "";
-            print(cameraScanResult);
-            final ticket = jsonDecode(cameraScanResult ?? '');
-            final ticketNo = ticket['order_number'];
-            seatNos = ticket['seat_number'];
-            orderNumberController.text = ticketNo;
-            checkDetails(context);
-          } catch (e) {
-            showAppToast(msg: "Not a valid ticket");
+          if (cameraScanResult?.isNotEmpty ?? false) {
+            try {
+              seatNos = "";
+              print(cameraScanResult);
+              final ticket = jsonDecode(cameraScanResult ?? '');
+              final ticketNo = ticket['order_number'];
+              seatNos = ticket['seat_number'];
+              orderNumberController.text = ticketNo;
+              checkDetails(context);
+            } catch (e) {
+              Alert(
+                      context: context,
+                      title: "Alert",
+                      desc: "Not a valid ticket",
+                      type: AlertType.info)
+                  .show();
+            }
           }
 
           // Navigator.of(context).push(MaterialPageRoute(
@@ -66,7 +85,8 @@ class _HomePageState extends State<HomePage> {
   void checkDetails(BuildContext context) {
     GetTicketRepo(orderNumberController.text, seatNos).fetchFromAPIService(
       onShowError: (msg, [asToast]) {
-        showAppToast(msg: msg);
+        Alert(context: context, title: "Alert", desc: msg, type: AlertType.info)
+            .show();
       },
       onSuccess: (tickets) {
         if (tickets != null) {
@@ -79,10 +99,20 @@ class _HomePageState extends State<HomePage> {
                       DetailPage(data: tickets, seatNos: seatNos),
                 ));
           } else {
-            showAppToast(msg: tickets.message!);
+            Alert(
+                    context: context,
+                    title: "Alert",
+                    desc: tickets.message ?? "Not a valid ticket",
+                    type: AlertType.info)
+                .show();
           }
         } else {
-          showAppToast(msg: "no ticket found");
+          Alert(
+                  context: context,
+                  title: "Alert",
+                  desc: "Not a valid ticket",
+                  type: AlertType.info)
+              .show();
         }
       },
     );

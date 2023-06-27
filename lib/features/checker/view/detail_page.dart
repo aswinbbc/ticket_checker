@@ -67,6 +67,7 @@ class TicketDetails extends StatelessWidget {
             eventName: ticketModel.result!.eventTitle!,
             concertDate: ticketModel.result!.eventDate!,
             seatNumber: ticketModel.result!.seats!.length.toString(),
+            seatType: ticketModel.result!.seatType ?? "not specified",
           ),
         ),
         const Divider(),
@@ -113,7 +114,7 @@ class TicketDetails extends StatelessWidget {
                   totalSeats: seatNos,
                 );
               }
-            }, // TODO: submit selected tickets.
+            }, // submit selected tickets.
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               minimumSize: const Size.fromHeight(50),

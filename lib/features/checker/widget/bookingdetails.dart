@@ -6,11 +6,13 @@ class BookingDetailsWidget extends StatelessWidget {
     required this.eventName,
     required this.concertDate,
     required this.seatNumber,
+    required this.seatType,
   }) : super(key: key);
 
   final String eventName;
   final String concertDate;
   final String seatNumber;
+  final String seatType;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,17 @@ class BookingDetailsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("No of Seats",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              Text(seatNumber,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Seat type",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               Text(seatNumber,
                   style: const TextStyle(
