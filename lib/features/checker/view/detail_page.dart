@@ -104,28 +104,40 @@ class TicketDetails extends StatelessWidget {
                 selected = allSelectedItems;
               }),
         ),
-        const Expanded(
-          child: SizedBox(),
+        Expanded(
+          child: ticketModel.result!.bookedSeatNos ==
+                  ticketModel.result!.takenSeatNos
+              ? const Center(
+                  child: Text("Already Scanned",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      )),
+                )
+              : const SizedBox(),
         ),
-        Center(
-          child: ElevatedButton(
-            onPressed: () {
-              if (selected.isNotEmpty) {
-                submitDetails(
-                  context,
-                  seatNo: selected.join(',').log(),
-                  ticketNo: ticketModel.result?.orderNo ?? '',
-                  totalSeats: seatNos,
-                );
-              }
-            }, // submit selected tickets.
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryColor,
-              minimumSize: const Size.fromHeight(50),
+        if (ticketModel.result!.bookedSeatNos !=
+            ticketModel.result!.takenSeatNos)
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                if (selected.isNotEmpty) {
+                  submitDetails(
+                    context,
+                    seatNo: selected.join(',').log(),
+                    ticketNo: ticketModel.result?.orderNo ?? '',
+                    totalSeats: seatNos,
+                  );
+                }
+              }, // submit selected tickets.
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                minimumSize: const Size.fromHeight(50),
+              ),
+              child: const Text("Submit"),
             ),
-            child: const Text("Submit"),
           ),
-        ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_checker/constants/colors.dart';
 
 class BookingDetailsWidget extends StatelessWidget {
   const BookingDetailsWidget({
@@ -31,7 +32,9 @@ class BookingDetailsWidget extends StatelessWidget {
               ),
               Text(customerName,
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
                   ))
             ],
           ),

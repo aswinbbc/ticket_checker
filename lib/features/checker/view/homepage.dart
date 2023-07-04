@@ -40,17 +40,21 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: primaryColor,
         title: const Center(child: Text("Search Tickets")),
       ),
-      floatingActionButton: Text.rich(
-        TextSpan(
-          text: 'Powered by ',
-          children: <TextSpan>[
-            TextSpan(
-                text: 'Amalgamate',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
+      floatingActionButton: Image.asset(
+        "assets/icon/logo_nobg.png",
+        height: 150,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // Text.rich(
+      //   TextSpan(
+      //     text: 'Powered by ',
+      //     children: <TextSpan>[
+      //       TextSpan(
+      //           text: 'Amalgamate',
+      //           style: TextStyle(fontWeight: FontWeight.bold)),
+      //     ],
+      //   ),
+      // ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: QrScannerBox(
         orderNumberController: orderNumberController,
         onIconClick: () async {
