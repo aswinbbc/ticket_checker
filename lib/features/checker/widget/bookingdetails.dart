@@ -7,9 +7,11 @@ class BookingDetailsWidget extends StatelessWidget {
     required this.concertDate,
     required this.seatNumber,
     required this.seatType,
+    required this.customerName,
   }) : super(key: key);
 
   final String eventName;
+  final String customerName;
   final String concertDate;
   final String seatNumber;
   final String seatType;
@@ -24,6 +26,20 @@ class BookingDetailsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
+                "Customer Name",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text(customerName,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ))
+            ],
+          ),
+          SizedBox.fromSize(size: const Size.fromHeight(10)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
                 "Event Name",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
@@ -33,21 +49,19 @@ class BookingDetailsWidget extends StatelessWidget {
                   ))
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Date",
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                Text(concertDate,
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ))
-              ],
-            ),
+          SizedBox.fromSize(size: const Size.fromHeight(10)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Date",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              Text(concertDate,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ))
+            ],
           ),
+          SizedBox.fromSize(size: const Size.fromHeight(10)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -59,12 +73,13 @@ class BookingDetailsWidget extends StatelessWidget {
                   ))
             ],
           ),
+          SizedBox.fromSize(size: const Size.fromHeight(10)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Seat type",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              Text(seatNumber,
+              Text(seatType,
                   style: const TextStyle(
                     fontSize: 15,
                   ))

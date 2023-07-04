@@ -60,10 +60,14 @@ class TicketDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomerName(customerName: ticketModel.result!.customerName!),
+        // CustomerName(customerName: ticketModel.result!.customerName!),
+        SizedBox.fromSize(
+          size: const Size.fromHeight(50),
+        ),
         const Divider(),
         BorderedCard(
           child: BookingDetailsWidget(
+            customerName: ticketModel.result!.customerName!,
             eventName: ticketModel.result!.eventTitle!,
             concertDate: ticketModel.result!.eventDate!,
             seatNumber: ticketModel.result!.seats!.length.toString(),
