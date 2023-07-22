@@ -13,21 +13,28 @@ class InputField extends StatelessWidget {
   final bool obscureText;
   final int? minLine;
   final int? maxLine;
-  const InputField(
-      {this.labelText,
-      this.maxLine = 1,
-      this.minLine = 1,
-      this.onChanged,
-      this.onSubmitted,
-      this.errorText,
-      this.keyboardType,
-      this.textInputAction,
-      this.autoFocus = false,
-      this.obscureText = false,
-      Key? key,
-      this.controller,
-      this.style})
-      : super(key: key);
+  final bool? showCursor, readOnly;
+  final FocusNode? focusNode;
+  final InputBorder? border;
+  const InputField({
+    this.labelText,
+    this.maxLine = 1,
+    this.minLine = 1,
+    this.onChanged,
+    this.onSubmitted,
+    this.errorText,
+    this.keyboardType,
+    this.textInputAction,
+    this.autoFocus = false,
+    this.obscureText = false,
+    Key? key,
+    this.focusNode,
+    this.controller,
+    this.style,
+    this.readOnly,
+    this.border,
+    this.showCursor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,9 @@ class InputField extends StatelessWidget {
       onChanged: onChanged,
       minLines: minLine,
       maxLines: maxLine,
+      focusNode: focusNode,
+      showCursor: showCursor,
+      readOnly: readOnly ?? false,
       style: style,
       onSubmitted: onSubmitted,
       keyboardType: keyboardType,
@@ -46,9 +56,10 @@ class InputField extends StatelessWidget {
         labelText: labelText,
         errorText: errorText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: border ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
       ),
     );
   }
