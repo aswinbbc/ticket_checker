@@ -75,48 +75,55 @@ class TicketDetails extends StatelessWidget {
           ),
         ),
         const Divider(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: MultiSelectContainer(
-              itemsDecoration: MultiSelectDecorations(
-                decoration: boxDecoration,
-                selectedDecoration: selectedBoxDecoration,
-                disabledDecoration: disabledBoxDecoration,
-              ),
-              items: ticketModel.result!.seats!
-                  .map((seat) => MultiSelectCard(
-                      contentPadding: const EdgeInsets.all(20),
-                      prefix: MultiSelectPrefix(
-                        disabledPrefix: const Icon(Icons.disabled_by_default),
-                        enabledPrefix: const Icon(Icons.chair),
-                        selectedPrefix: const Icon(Icons.star),
-                      ),
-                      value: seat.seatNo,
-                      label: seat.seatNo,
-                      textStyles: const MultiSelectItemTextStyles(
-                          disabledTextStyle: TextStyle(fontSize: 20),
-                          selectedTextStyle: TextStyle(fontSize: 20),
-                          textStyle:
-                              TextStyle(fontSize: 20, color: Colors.black)),
-                      enabled: !(seat.taken ?? false)))
-                  .toList(),
-              onChange: (allSelectedItems, selectedItem) {
-                selected = allSelectedItems;
-              }),
-        ),
         Expanded(
-          child: ticketModel.result!.bookedSeatNos ==
-                  ticketModel.result!.takenSeatNos
-              ? const Center(
-                  child: Text("Already Scanned",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                      )),
-                )
-              : const SizedBox(),
+          flex: 5,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: MultiSelectContainer(
+                      itemsDecoration: MultiSelectDecorations(
+                        decoration: boxDecoration,
+                        selectedDecoration: selectedBoxDecoration,
+                        disabledDecoration: disabledBoxDecoration,
+                      ),
+                      items: ticketModel.result!.seats!
+                          .map((seat) => MultiSelectCard(
+                              contentPadding: const EdgeInsets.all(20),
+                              prefix: MultiSelectPrefix(
+                                disabledPrefix:
+                                    const Icon(Icons.disabled_by_default),
+                                enabledPrefix: const Icon(Icons.chair),
+                                selectedPrefix: const Icon(Icons.star),
+                              ),
+                              value: seat.seatNo,
+                              label: seat.seatNo,
+                              textStyles: const MultiSelectItemTextStyles(
+                                  disabledTextStyle: TextStyle(fontSize: 20),
+                                  selectedTextStyle: TextStyle(fontSize: 20),
+                                  textStyle: TextStyle(
+                                      fontSize: 20, color: Colors.black)),
+                              enabled: !(seat.taken ?? false)))
+                          .toList(),
+                      onChange: (allSelectedItems, selectedItem) {
+                        selected = allSelectedItems;
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
+        ticketModel.result!.bookedSeatNos == ticketModel.result!.takenSeatNos
+            ? const Center(
+                child: Text("Already Scanned",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    )),
+              )
+            : const SizedBox(),
         if (ticketModel.result!.bookedSeatNos !=
             ticketModel.result!.takenSeatNos)
           Center(

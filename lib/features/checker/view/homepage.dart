@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   var orderNumberController = TextEditingController();
   @override
   void initState() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    // SystemChannels.textInput.invokeMethod('TextInput.hide');
 
     Permission.camera.status.then((status) {
       if (status.isDenied) {
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      SystemChannels.textInput.invokeMethod('TextInput.hide');
+      // SystemChannels.textInput.invokeMethod('TextInput.hide');
       myFocusNode.requestFocus();
     }
   }
@@ -49,15 +49,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: const Center(child: Text("Search Tickets")),
       ),
-      floatingActionButton: Image.asset(
-        "assets/icon/logo_nobg.png",
-        height: 150,
-      ),
+      floatingActionButton: showFab
+          ? Image.asset(
+              "assets/icon/logo_nobg.png",
+              height: 150,
+            )
+          : null,
       // Text.rich(
       //   TextSpan(
       //     text: 'Powered by ',
@@ -68,29 +71,37 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //     ],
       //   ),
       // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          QrScannerBox(
-            orderNumberController: orderNumberController,
-            onIconClick: () async => verify(await scanner.scan()),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InputField(
-              showCursor: false,
-              readOnly: true,
-              focusNode: myFocusNode,
-              controller: inputController,
-              // border: InputBorder.none,
-              // style: const TextStyle(color: Colors.transparent),
-              onChanged: (text) {
-                if (text.isNotEmpty) {
-                  verify(text);
-                  inputController.clear();
-                }
-              },
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                QrScannerBox(
+                  orderNumberController: orderNumberController,
+                  onIconClick: () async => verify(await scanner.scan()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: InputField(
+                    // showCursor: false,
+                    // readOnly: true,
+                    focusNode: myFocusNode,
+                    controller: inputController,
+                    // border: InputBorder.none,
+                    // style: const TextStyle(color: Colors.transparent),
+                    onChanged: (text) {
+                      if (text.isNotEmpty) {
+                        verify(text);
+                        inputController.clear();
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

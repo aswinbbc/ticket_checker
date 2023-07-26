@@ -17,7 +17,7 @@ class QrScannerBox extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       child: Center(
         child: IconButton(
-          iconSize: 250,
+          iconSize: 230,
           icon: const Icon(Icons.qr_code_scanner_rounded),
           onPressed: onIconClick,
         ),
